@@ -21,7 +21,7 @@
         // Replace 'SHEET_NAME' with the name of your Google Sheet
         const SHEET_NAME = 'Sheet1';
         // The range of data you want to retrieve
-        const RANGE = 'A2:N'; // Assuming data starts from row 2 and spans columns A to E
+        const RANGE = 'A1:N'; // Assuming data starts from row 1 and spans columns A to N
 
         // Function to load Google Sheets data
         function loadSheetsData() {
@@ -34,7 +34,12 @@
                     // Find the row with the matching submissionID
                     const rowData = values.find(row => row[0] === submissionID);
                     if (rowData) {
-                        displayData(rowData);
+                        const payloadIndex = values[0].indexOf('Payload'); // Find the index of the 'Payload' header
+                        if (payloadIndex !== -1) {
+                            displayData(rowData[payloadIndex]);
+                        } else {
+                            displayError('Payload column not found');
+                        }
                     } else {
                         displayError('Submission ID not found');
                     }
@@ -46,13 +51,9 @@
         }
 
         // Function to display data on the page
-        function displayData(rowData) {
+        function displayData(payload) {
             const container = document.getElementById('data');
-            container.innerHTML = '<ul>';
-            rowData.forEach(cell => {
-                container.innerHTML += `<li>${cell}</li>`;
-            });
-            container.innerHTML += '</ul>';
+            container.innerHTML = `<pre>${payload}</pre>`; // Display JSON content
         }
 
         // Function to display error message on the page
@@ -66,3 +67,5 @@
     </script>
 </body>
 </html>
+
+     
