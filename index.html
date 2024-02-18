@@ -1,71 +1,69 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Event Details</title>
-</head>
-<body>
+  </head>
+  <body>
     <h1>Event Details</h1>
     <div id="data"></div>
 
     <script>
-        // Extract submission ID from the URL
-        const urlParams = new URLSearchParams(window.location.search);
-        const submissionID = urlParams.get('submissionID');
+      // Extract submission ID from the URL
+      const urlParams = new URLSearchParams(window.location.search);
+      const submissionID = urlParams.get("submissionID");
 
-        // Replace 'YOUR_SPREADSHEET_ID' with the ID of your Google Sheet
-        const SPREADSHEET_ID = '1ERTXiKMbF18rY9mR976hQGrJ4pkmfPzlzVhaSeyebII';
-        // Replace 'YOUR_API_KEY' with your Google Sheets API key
-        const API_KEY = 'AIzaSyB5YiRWPx7Z8X11sQda84BeS17PEHBFZNQ';
-        // Replace 'SHEET_NAME' with the name of your Google Sheet
-        const SHEET_NAME = 'Sheet1';
-        // The range of data you want to retrieve
-        const RANGE = 'A2:N'; // Assuming data starts from row 1 and spans columns A to N
+      // Replace 'YOUR_SPREADSHEET_ID' with the ID of your Google Sheet
+      const SPREADSHEET_ID = "1ERTXiKMbF18rY9mR976hQGrJ4pkmfPzlzVhaSeyebII";
+      // Replace 'YOUR_API_KEY' with your Google Sheets API key
+      const API_KEY = "AIzaSyB5YiRWPx7Z8X11sQda84BeS17PEHBFZNQ";
+      // Replace 'SHEET_NAME' with the name of your Google Sheet
+      const SHEET_NAME = "Sheet1";
+      // The range of data you want to retrieve
+      const RANGE = "A1:N"; // Assuming data starts from row 1 and spans columns A to N
 
-        // Function to load Google Sheets data
-        function loadSheetsData() {
-            const url = `https://sheets.googleapis.com/v4/spreadsheets/${SPREADSHEET_ID}/values/${SHEET_NAME}!${RANGE}?key=${API_KEY}`;
+      // Function to load Google Sheets data
+      function loadSheetsData() {
+        const url = `https://sheets.googleapis.com/v4/spreadsheets/${SPREADSHEET_ID}/values/${SHEET_NAME}!${RANGE}?key=${API_KEY}`;
 
-            fetch(url)
-                .then(response => response.json())
-                .then(data => {
-                    const values = data.values;
-                    // Find the row with the matching submissionID
-                    const rowData = values.find(row => row[0] === submissionID);
-                    if (rowData) {
-                        const payloadIndex = values[0].indexOf('Payload'); // Find the index of the 'Payload' header
-                        if (payloadIndex !== -1) {
-                            displayData(rowData[payloadIndex]);
-                        } else {
-                            displayError('Payload column not found');
-                        }
-                    } else {
-                        displayError('Submission ID not found');
-                    }
-                })
-                .catch(error => {
-                    console.error('Error fetching Google Sheets data:', error);
-                    displayError('Failed to fetch data');
-                });
-        }
+        fetch(url)
+          .then((response) => response.json())
+          .then((data) => {
+            const values = data.values;
+            // Find the row with the matching submissionID
+            const rowData = values.find((row) => row[0] === submissionID);
+            if (rowData) {
+              const payloadIndex = values[0].indexOf("Payload"); // Find the index of the 'Payload' header
+              if (payloadIndex !== -1) {
+                displayData(rowData[payloadIndex]);
+              } else {
+                displayError("Payload column not found");
+              }
+            } else {
+              displayError("Submission ID not found");
+            }
+          })
+          .catch((error) => {
+            console.error("Error fetching Google Sheets data:", error);
+            displayError("Failed to fetch data");
+          });
+      }
 
-        // Function to display data on the page
-        function displayData(payload) {
-            const container = document.getElementById('data');
-            container.innerHTML = `<pre>${payload}</pre>`; // Display JSON content
-        }
+      // Function to display data on the page
+      function displayData(payload) {
+        const container = document.getElementById("data");
+        container.innerHTML = `<pre>${payload}</pre>`; // Display JSON content
+      }
 
-        // Function to display error message on the page
-        function displayError(message) {
-            const container = document.getElementById('data');
-            container.innerHTML = `<p>${message}</p>`;
-        }
+      // Function to display error message on the page
+      function displayError(message) {
+        const container = document.getElementById("data");
+        container.innerHTML = `<p>${message}</p>`;
+      }
 
-        // Call the function to load data when the page loads
-        window.onload = loadSheetsData;
+      // Call the function to load data when the page loads
+      window.onload = loadSheetsData;
     </script>
-</body>
+  </body>
 </html>
-
-     
