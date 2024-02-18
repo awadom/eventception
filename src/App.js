@@ -9,11 +9,11 @@ function App() {
     if (submissionID) {
       // Fetching data based on the Submission ID
       fetch(
-        `https://sheetdb.io/api/v1/58f61be4dda40/search?ID=${submissionID}`,
+        `https://sheetdb.io/api/v1/58f61be4dda40/search?ID=${"Submission ID"}`,
         {
           method: "GET",
           headers: {
-            Authorization: "Bearer p5oie4u1hmlyq7xpz3zjfjdmjiamqta2640k3f7l",
+            Authorization: "Bearer l20nmnivewlxfegfhu95uktazs59llx6inaw0j0h",
           },
         }
       )
