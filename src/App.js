@@ -1,20 +1,42 @@
-import React from "react";
+import React, { useEffect } from "react";
 
 function App() {
-  const readGoogleSheet = () => {
-    fetch("https://sheetdb.io/api/v1/cdgmxgjxfvt4d", {
-      method: "GET",
-      headers: {
-        Authorization: "Bearer p5oie4u1hmlyq7xpz3zjfjdmjiamqta2640k3f7l",
-      },
-    })
-      .then((response) => response.json())
-      .then((data) => console.log(data));
-  };
+  useEffect(() => {
+    // Extracting the ID parameter from the URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const submissionID = urlParams.get("ID");
+
+    if (submissionID) {
+      // Fetching data based on the Submission ID
+      fetch(
+        `https://sheetdb.io/api/v1/58f61be4dda40/search?ID=${submissionID}`,
+        {
+          method: "GET",
+          headers: {
+            Authorization: "Bearer p5oie4u1hmlyq7xpz3zjfjdmjiamqta2640k3f7l",
+          },
+        }
+      )
+        .then((response) => response.json())
+        .then((data) => {
+          // Extracting the Payload for the given Submission ID
+          if (data && data.length > 0) {
+            const payload = data[0].Payload;
+            console.log(payload); // You can use the payload data as per your requirement
+          } else {
+            console.log("No data found for the given ID.");
+          }
+        })
+        .catch((error) => {
+          console.error("Error fetching data:", error);
+        });
+    }
+  }, []);
 
   return (
     <div className="App">
-      <button onClick={() => readGoogleSheet()}>Read</button>
+      {/* No need for a button as data fetching is automatic on component mount */}
+      <h1>Data Fetching Example</h1>
     </div>
   );
 }
