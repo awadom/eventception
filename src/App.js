@@ -21,7 +21,7 @@ function App() {
         .then((data) => {
           // Extracting the Payload for the given Submission ID
           if (data && data.length > 0) {
-            const payload = data[0].Payload;
+            const payload = data[13];
             console.log(payload); // You can use the payload data as per your requirement
           } else {
             console.log("No data found for the given ID.");
