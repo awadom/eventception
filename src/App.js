@@ -46,7 +46,8 @@ const createHTMLForBusiness = (business) => {
 
 function App() {
   const [emailName, setEmailName] = useState(""); // State to store email name
-  const [zipCode, setZip] = useState(""); // State to store email name
+  const [zipCode, setZip] = useState(""); // State to store zip code
+  const [rangeInMiles, setRange] = useState(""); // State to store range in miles
   const [cards, setCards] = useState([]);
 
   useEffect(() => {
@@ -76,8 +77,10 @@ function App() {
               const payload = JSON.parse(data[0].Payload);
               const email = data[0]["Please enter your email to receive a response."];
               const zip = data[0]["What is your zip code?"];
+              const range = data[0]["How far from your location can this venue be? (in miles)"];
               setEmailName(email); // Set emailName state
-              setZip(zip); // Set emailName state
+              setZip(zip); // Set zip state
+              setRange(range); // Set range state
               setCards(generateCards(payload)); // Set cards state
             } else {
               console.log("No data found for the given ID.");
@@ -98,7 +101,7 @@ function App() {
   return (
     <div className="App">
 
-      <h1>Hi, {emailName} {zipCode}</h1>
+      <h1>Hi, {emailName} {zipCode} {rangeInMiles}</h1>
       {cards}
     </div>
   );
